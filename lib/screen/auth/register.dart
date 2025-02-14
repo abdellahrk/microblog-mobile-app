@@ -113,12 +113,6 @@ class _RegisterState extends State<Register> {
                                   content: Text('Register successful ')));
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Login()));
-                          // var responseData = jsonDecode(response.body);
-                          // await _secureStorage.write(
-                          //     key: 'token', value: responseData['token']);
-                          // await _secureStorage.write(
-                          //     key: 'refresh_token',
-                          //     value: responseData['refresh_token']);
                         }
                       },
                       child: Text('Sign up ')),
