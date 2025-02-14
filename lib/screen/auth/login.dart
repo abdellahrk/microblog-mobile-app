@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:microblog_app/model/auth/login_user.dart';
 import 'package:microblog_app/screen/auth/register.dart';
+import 'package:microblog_app/screen/dashboard.dart';
+import 'package:microblog_app/service/api_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,6 +17,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _apiService = ApiService();
+  final _secureStorage = FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -65,6 +73,7 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(
                       label: Text('Password'),
                     ),
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: 20,
@@ -78,7 +87,32 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text('Login')),
+                  ElevatedButton(
+                      onPressed: () async {
+                        var user = LoginUser(
+                            username: _usernameController.text.toString(),
+                            password: _passwordController.text.toString());
+                        var response = await _apiService.login(user);
+                        var responseData = jsonDecode(response.body);
+                        if (response.statusCode != 200) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Login failed")));
+                          return;
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Login successful")));
+
+                        await _secureStorage.write(
+                            key: 'token', value: responseData['token']);
+                        await _secureStorage.write(
+                            key: 'refresh_token',
+                            value: responseData['refresh_token']);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Dashboard()));
+                      },
+                      child: Text('Login')),
                   SizedBox(
                     height: 20,
                   ),
