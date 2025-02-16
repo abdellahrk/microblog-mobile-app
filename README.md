@@ -9,6 +9,6 @@ Simple to setup with a simple `ddev start` command. Check that repository out.
 
 ## Features
 
- -  Registration [x]
- -  Authentication [x]
- -  Post blog article [] 
+ - [x]  Registration
+ - [x]  Token Login 
+ - [ ] Post blog article
