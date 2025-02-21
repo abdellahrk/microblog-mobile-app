@@ -33,8 +33,8 @@ class _DashboardState extends State<Dashboard> {
         shadowColor: Colors.deepPurple,
         surfaceTintColor: Colors.redAccent,
         shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.vertical(
-            bottom: new Radius.elliptical(20.0, 18.0),
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.elliptical(20.0, 18.0),
           ),
         ),
         title: Text("Dashboard"),
@@ -68,7 +68,9 @@ class _DashboardState extends State<Dashboard> {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
-                    onTap: null,
+                    onTap: () {
+                      context.go('/my-blog-posts');
+                    },
                     child: Text(
                       "Blog Posts",
                       style: TextStyle(fontWeight: FontWeight.w700),

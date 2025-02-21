@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:microblog_app/screen/auth/login.dart';
+import 'package:microblog_app/notifier/blog_post_notifier.dart';
 import 'package:microblog_app/service/router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => BlogPostNotifier())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

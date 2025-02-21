@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:microblog_app/screen/auth/login.dart';
 import 'package:microblog_app/screen/auth/register.dart';
+import 'package:microblog_app/screen/blog/show_blog.dart';
+import 'package:microblog_app/screen/dashboard/blog_posts.dart';
 import 'package:microblog_app/screen/dashboard/home.dart';
 import 'package:microblog_app/screen/dashboard/new_blog_post.dart';
 import 'package:microblog_app/service/secure_storage.dart';
@@ -28,14 +30,15 @@ class MyRoute {
               path: '/dashboard',
               name: 'dashboard',
               builder: (context, state) => const Dashboard()),
-          // GoRoute(
-          //     path: '/post-property',
-          //     name: 'post_property',
-          //     builder: (context, state) => const PostProperty()),
-          // GoRoute(
-          //     path: '/agency-my-profile',
-          //     name: 'agency_my_profile',
-          //     builder: (context, state) => const Profile()),
+          GoRoute(
+              path: '/blog/:slug',
+              name: 'show_blog',
+              builder: (context, state) =>
+                  ShowBlog(slug: state.pathParameters['slug']!)),
+          GoRoute(
+              path: '/my-blog-posts',
+              name: 'my_blog_posts',
+              builder: (context, state) => const BlogPosts()),
           // GoRoute(
           //     path: '/agency/update-profile/:slug',
           //     name: 'update_agency_profile',
@@ -89,8 +92,9 @@ class MyRoute {
             return '/welcome';
           }
           if (jwtToken.isNotEmpty && state.uri.path == '/login') {
-            return '/';
+            // return '/';
           }
+          return null;
         });
   }
 }

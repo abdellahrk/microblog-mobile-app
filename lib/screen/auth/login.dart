@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:microblog_app/model/auth/login_user.dart';
 import 'package:microblog_app/screen/auth/register.dart';
 import 'package:microblog_app/screen/dashboard/home.dart';
@@ -113,10 +114,7 @@ class _LoginState extends State<Login> {
                             'fullName', responseData['user']['fullName']);
                         await _sharedPref.setInt(
                             'user_id', responseData['user']['id']);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Dashboard()));
+                        context.pushReplacement('/dashboard');
                       },
                       child: Text('Login')),
                   SizedBox(
