@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:microblog_app/screen/auth/login.dart';
+import 'package:microblog_app/notifier/blog_post_notifier.dart';
+import 'package:microblog_app/service/router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => BlogPostNotifier())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,6 +38,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final _router = MyRoute().getRoutes();
 
   void _incrementCounter() {
     setState(() {
@@ -42,37 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: Text(widget.title),
-      // ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Login()));
-              },
-              child: Text('Login'),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return MaterialApp.router(
+      routerConfig: _router,
     );
   }
 }

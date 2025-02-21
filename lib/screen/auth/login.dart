@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:microblog_app/model/auth/login_user.dart';
 import 'package:microblog_app/screen/auth/register.dart';
-import 'package:microblog_app/screen/dashboard.dart';
+import 'package:microblog_app/screen/dashboard/home.dart';
 import 'package:microblog_app/service/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,6 +21,7 @@ class _LoginState extends State<Login> {
   final _passwordController = TextEditingController();
   final _apiService = ApiService();
   final _secureStorage = FlutterSecureStorage();
+  final SharedPreferencesAsync _sharedPref = SharedPreferencesAsync();
 
   @override
   void dispose() {
@@ -107,10 +110,11 @@ class _LoginState extends State<Login> {
                         await _secureStorage.write(
                             key: 'refresh_token',
                             value: responseData['refresh_token']);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Dashboard()));
+                        await _sharedPref.setString(
+                            'fullName', responseData['user']['fullName']);
+                        await _sharedPref.setInt(
+                            'user_id', responseData['user']['id']);
+                        context.pushReplacement('/dashboard');
                       },
                       child: Text('Login')),
                   SizedBox(
